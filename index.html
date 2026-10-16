@@ -1,1 +1,45 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Busca Rápida Pro</title>
+<style>
+body{font-family:Arial,sans-serif;background:#101820;color:white;margin:0;padding:20px}
+h1{color:#67e8a5;text-align:center}
+input{width:100%;padding:14px;box-sizing:border-box;border-radius:10px;border:0;font-size:16px;margin:12px 0}
+button{padding:10px;margin:4px;border:0;border-radius:8px;background:#263746;color:white}
+button.active{background:#168653}
+.item{background:#1d2b36;padding:14px;border-radius:10px;margin:8px 0;display:flex;justify-content:space-between;gap:12px}
+.code{color:#67e8a5;font-weight:bold}
+small{color:#b8c6d1}
+</style>
+</head>
+<body>
+<h1>🔎 Busca Rápida Pro</h1>
+<p>Pesquise pelo nome do produto ou pelo código.</p>
+<input id="busca" placeholder="Digite nome ou código..." oninput="render()">
+<div id="categorias"></div>
+<div id="resultado"></div>
+<script>
+const produtos=[
+["Hortaliças",497,"Cebola Roxa"],["Hortaliças",500,"Quiabo"],["Hortaliças",501,"Tomate"],["Hortaliças",502,"Cebola"],["Hortaliças",503,"Cenoura"],["Hortaliças",504,"Pepino"],["Hortaliças",621,"Pepino Japonês"],["Hortaliças",505,"Beterraba"],["Hortaliças",506,"Repolho"],["Hortaliças",529,"Repolho Roxo"],["Hortaliças",507,"Batata Inglesa"],["Hortaliças",536,"Batata Doce Roxa"],["Hortaliças",508,"Alho"],["Hortaliças",509,"Jerimum"],["Hortaliças",510,"Pimentão"],["Hortaliças",511,"Chuchu"],["Hortaliças",514,"Berinjela"],["Hortaliças",515,"Inhame"],["Hortaliças",490,"Inhame Santomé"],["Hortaliças",528,"Abobrinha"],["Hortaliças",597,"Macaxeira"],
+["Frutas",559,"Abacaxi"],["Frutas",560,"Melão Espanhol"],["Frutas",569,"Melão Galia"],["Frutas",499,"Melancia Baby"],["Frutas",472,"Mamão Papaya"],["Frutas",530,"Mamão Formosa"],["Frutas",532,"Maçã Pequena"],["Frutas",561,"Maçã Extra"],["Frutas",483,"Maçã Argentina"],["Frutas",160,"Maçã Verde"],["Frutas",441,"Pera Portuguesa"],["Frutas",570,"Pera"],["Frutas",531,"Kiwi"],["Frutas",534,"Ameixa Importada"],["Frutas",546,"Nectarina"],["Frutas",558,"Pêssego"],["Frutas",571,"Manga Tommy"],["Frutas",596,"Manga Rosa"],["Frutas",564,"Goiaba"],["Frutas",566,"Maracujá"],["Frutas",581,"Pinha"],["Frutas",1023,"Pitaya"],["Frutas",493,"Moscota"],["Frutas",572,"Laranja Mimo"],["Frutas",573,"Laranja Pera"],["Frutas",484,"Tangerina"],["Frutas",480,"Pocam"],["Frutas",563,"Limão"],["Frutas",440,"Limão Siciliano"],["Frutas",541,"Caqui"],["Frutas",583,"Abacate"],
+["Ração para cães",632,"Dog Chow Adulto"],["Ração para cães",752,"Dog Chow Pequeno"],["Ração para cães",643,"Dog Chow Filhote"],["Ração para cães",635,"Alpo"],["Ração para cães",612,"Pedigree Jr"],["Ração para cães",610,"Pedigree Carne"],["Ração para cães",611,"Pedigree Carne e Vegetais"],["Ração para cães",613,"Pedigree Pequeno"],
+["Ração para gatos",606,"Whiskas Peixe"],["Ração para gatos",607,"Whiskas Carne"],["Ração para gatos",1822,"Whiskas Mix Carne"],["Ração para gatos",646,"Whiskas Frango"],["Ração para gatos",650,"Whiskas Castrado"],["Ração para gatos",619,"Friskies Adulto"],["Ração para gatos",608,"Friskies Frango"],["Ração para gatos",628,"Friskies Mix"],["Ração para gatos",653,"Friskies Filhote"],["Ração para gatos",642,"Friskies Castrado"]
+];
+let categoria="Todos";
+function montarCategorias(){
+const cats=["Todos",...new Set(produtos.map(p=>p[0]))];
+document.getElementById("categorias").innerHTML=cats.map(c=>`<button class="${c===categoria?'active':''}" onclick="categoria=${JSON.stringify(c)};montarCategorias();render()">${c}</button>`).join("");
+}
+function render(){
+const q=document.getElementById("busca").value.trim().toLocaleLowerCase("pt-BR");
+const lista=produtos.filter(p=>(categoria==="Todos"||p[0]===categoria)&&(!q||p[2].toLocaleLowerCase("pt-BR").includes(q)||String(p[1]).includes(q)));
+document.getElementById("resultado").innerHTML=`<small>${lista.length} produto(s) encontrado(s)</small>`+lista.map(p=>`<div class="item"><div><strong>${p[2]}</strong><br><small>${p[0]}</small></div><span class="code">${p[1]}</span></div>`).join("");
+}
+montarCategorias();render();
+</script>
+</body>
+</html>
